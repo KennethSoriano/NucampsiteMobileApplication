@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, Alert, PanResponder } from 'react-native';
+import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, Alert, PanResponder, Share } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
@@ -19,6 +19,8 @@ const mapDispacthToProps = {
   postFavorite: campsiteId => (postFavorite(campsiteId)),
   postComment: (campsiteId, rating, author, text) => (postComment(campsiteId, rating, author, text))
 }
+
+
 
 
 
@@ -66,6 +68,16 @@ function RenderCampsite(props) {
     }
   });
 
+  const shareCampsite = (title, message, url) => {
+    Share.share({
+      title: title,
+      message: `${title}: ${message} ${url}`,
+      url: url
+    },{
+        dialogTitle: 'Share ' + title
+    });
+  };
+
   if (campsite) {
     return (
       <Animatable.View 
@@ -97,6 +109,14 @@ function RenderCampsite(props) {
                 raised
                 reverse
                 onPress={() => props.onShowModal()}
+              />
+              <Icon
+                name={'share'}
+                type='font-awesome'
+                color='#5637DD'
+                raised
+                reverse
+                onPress={() => shareCampsite(campsite.name, campsite.description, baseurl + campsite.image)}
               />
             </View>
         </Card>
