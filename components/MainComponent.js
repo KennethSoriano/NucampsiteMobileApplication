@@ -4,6 +4,8 @@ import Directory from "./DirectoryComponent";
 import CampsiteInfo from "./CampsiteInfoComponent";
 import About from "./AboutComponent";
 import Contact from "./ContactComponent";
+import Favorites from './FavoritesComponent';
+import Login from './LoginComponent';
 import {View, Platform, StyleSheet, Text, ScrollView, Image} from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
@@ -14,7 +16,7 @@ import Reservation from "./ReservationComponent";
 import { Icon } from "react-native-elements";
 import SafeAreaView from "react-native-safe-area-view";
 import Reservation from "./ReservationComponent";
-import Favorites from './FavoritesComponent';
+
 
 const mapDispatchToProps = {
   fetchCampsites,
@@ -152,7 +154,7 @@ const ReservationNavigator = createStackNavigator(
   }
 );
 
-const CustomDrawerContentComponent = (props) => (
+const CustomDrawerContentComponent = props => (
   <ScrollView>
     <SafeAreaView
       style={styles.container}
@@ -175,6 +177,21 @@ const CustomDrawerContentComponent = (props) => (
 );
 
 const MainNavigator = createDrawerNavigator(
+  {
+    Login: {
+      screen: LoginNavigator,
+      navigationOptions: {
+        drawerIcon: ({tintColor}) => (
+          <Icon
+            name='sign-in'
+            type='font-awesome'
+            size={24}
+            color = {tintColor}
+          />
+        )
+      }
+    }
+  },
   {
     Home: {
       screen: HomeNavigator,
@@ -245,6 +262,7 @@ const MainNavigator = createDrawerNavigator(
     },
   },
   {
+    initialRouteName: 'Home',
     drawerBackgroundColor: "#CEC8FF",
     contentComponent: CustomDrawerContentComponent,
   }
@@ -274,6 +292,30 @@ const FavoritesNavigator = createStackNavigator(
     })
   }
 );
+
+const LoginNavigator = createStackNavigator(
+  {
+    Login: { screen: Login }
+  },
+  {
+    defaultNavigationOptions: ({navigation}) => ({
+      headerStyle: {
+        backgroundColor: '#5637DD'
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        color: '#fff'
+      },
+      headerLeft: <Icon
+        name='sign-in'
+        type='font-awesome'
+        iconStyle={styles.stackIcon}
+        onPress={() => navigation.toggleDrawer()}
+      />
+    })
+  }
+);
+
 
 class Main extends Component {
   componentDidMount() {
