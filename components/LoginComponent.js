@@ -9,9 +9,10 @@ import { baseUrl } from '../shared/baseUrl';
 
 class LoginTab extends Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props);
-        this. state = {
+
+        this.state = {
             username: '',
             password: '',
             remember: false
@@ -31,15 +32,17 @@ class LoginTab extends Component {
 
     handleLogin() {
         console.log(JSON.stringify(this.state));
-        if(this.state.remember) {
-            SecureStore.setItemAsync('userinfo', JSON.stringify({
+        if (this.state.remember) {
+            SecureStore.setItemAsync(
+                'userinfo',
+                JSON.stringify({
                     username: this.state.username,
                     password: this.state.password
-                }))
-                .catch(error => console.log('Could not save user info', error));
+                })
+            ).catch(error => console.log('Could not save user info', error));
         } else {
-            SecureStore.deleteItemAsync('userinfo')
-            .catch(error => console.log('Could not delete user info', error)
+            SecureStore.deleteItemAsync('userinfo').catch(
+                error => console.log('Could not delete user info', error)
             );
         }
     }
@@ -48,7 +51,7 @@ class LoginTab extends Component {
         SecureStore.getItemAsync('userinfo')
             .then(userdata => {
                 const userinfo = JSON.parse(userdata);
-                if(userinfo) {
+                if (userinfo) {
                     this.setState({username: userinfo.username});
                     this.setState({password: userinfo.password});
                     this.setState({remember: true})
@@ -67,7 +70,7 @@ class LoginTab extends Component {
                     containerStyle={styles.formInput}
                     leftIconContainerStyle={styles.formIcon}
                 />
-                 <Input
+                <Input
                     placeholder='Password'
                     leftIcon={{type: 'font-awesome', name: 'key'}}
                     onChangeText={password => this.setState({password})}
@@ -89,7 +92,7 @@ class LoginTab extends Component {
                         icon={
                             <Icon
                                 name='sign-in'
-                                type='type-awesome'
+                                type='font-awesome'
                                 color='#fff'
                                 iconStyle={{marginRight: 10}}
                             />
@@ -99,7 +102,7 @@ class LoginTab extends Component {
                 </View>
                 <View style={styles.formButton}>
                     <Button
-                        onPress={() => this.props.navigation.navigate('Register')} 
+                        onPress={() => this.props.navigation.navigate('Register')}
                         title='Register'
                         type='clear'
                         icon={
@@ -122,12 +125,13 @@ class RegisterTab extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             username: '',
-            password:'',
-            firstname:'',
-            lastname:'',
-            email:'',
+            password: '',
+            firstname: '',
+            lastname: '',
+            email: '',
             remember: false,
             imageUrl: baseUrl + 'images/logo.png'
         };
@@ -153,7 +157,7 @@ class RegisterTab extends Component {
                 allowsEditing: true,
                 aspect: [1, 1]
             });
-            if (!campturedImage.cancelled) {
+            if (!capturedImage.cancelled) {
                 console.log(capturedImage);
                 this.setState({imageUrl: capturedImage.uri});
             }
@@ -174,12 +178,12 @@ class RegisterTab extends Component {
     }
 
     render() {
-        return(
+        return (
             <ScrollView>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
                         <Image
-                            source={{uri: this.state.imageurl}} 
+                            source={{uri: this.state.imageUrl}}
                             loadingIndicatorSource={require('./images/logo.png')}
                             style={styles.image}
                         />
@@ -252,7 +256,7 @@ class RegisterTab extends Component {
                     </View>
                 </View>
             </ScrollView>
-        )
+        );
     }
 }
 
